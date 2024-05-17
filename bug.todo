@@ -1,0 +1,23 @@
+[x] lorsque le player meurt une fois, il meurt en boucle à côté du coin 
+
+[x] lorsque le player meurt 2x ou plus, si il prend le life le nombre de live devient 4 automatiquement (le problème est que Gamedata est toujours reinitialiser à 3 après une mort)
+
+[x] affichage du score sur les modals de pause, win et game over
+
+[x] le timer ne s'arrete pas sur les modals (pause, game over...)
+
+[x] bloquer pause lors du game over
+
+[x] lorsque la game est terminée et que nous allons dans menu puis play le player n'apparait pas
+
+[x] le timer qui apparait sur le game over n'est pas celui du jeu
+
+[x] player accélère quand il meurt
+
+[x] Lorsque le jeu est terminé, le player continue de courir
+
+[x] L'input ne marche pas lorsqu'on doit entrer son nom d'utilisateur à la fin du jeu
+
+[x] lorsque l'on fini la game est que l'on restart la game il affiche "You Finished the Game"
+
+[ ] lorsque l'on quitte durant la game et que depuis le menu on appui sur play le temps décremente +1s

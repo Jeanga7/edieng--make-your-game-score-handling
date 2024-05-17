@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player</title>
+    <style>
+        .player {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 120px;
+            width: 120px;
+            background-color: pink;
+        }
+
+        .idle {
+            animation: idle 600ms steps(10) infinite alternate;
+        }
+
+        .jump {
+            animation: jump 1.2s steps(20);
+        }
+
+        .run {
+            animation: run 0.6s steps(6) infinite;
+        }
+
+        .attack {
+            animation: attack 1.2s steps(12);
+        }
+
+        @keyframes idle {
+            0% {background-position: 0 0;}
+            100% {background-position: -1200px 0;}
+        }
+        @keyframes jump {
+            0% {background-position: 0 -120px;}
+            100% {background-position: -2400px -120px;}
+        }
+
+        @keyframes run {
+            0% {background-position: 0 -240px;}
+            100% {background-position: -720px -240px;}
+        }
+
+        @keyframes attack {
+            0% {background-position: 0 -360px;}
+            100% {background-position: -1440px -360px;}
+        } 
+    </style>
+</head>
+<body>
+    <span class="player attack" style="background-image: url('/img/player-2-home.png');"></span>
+</body>
+</html>

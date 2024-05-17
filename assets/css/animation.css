@@ -1,0 +1,52 @@
+.perso {
+    height: 60px;
+    width: 60px;
+}
+
+.home-perso {
+    height: 120px;
+    width: 120px;
+}
+
+.idle {
+    animation: idle 600ms steps(10) infinite alternate;
+}
+
+.home-idle {
+    animation: home-idle 600ms steps(10) infinite alternate;
+}
+
+.jump {
+    animation: jump 1.2s steps(20);
+}
+
+.run {
+    animation: run 0.6s steps(6) infinite;
+}
+
+.attack {
+    animation: attack 0.5s steps(12) infinite;
+}
+
+@keyframes home-idle {
+    0% {background-position: 0 0;}
+    100% {background-position: -1200px 0;}
+}
+@keyframes idle {
+    0% {background-position: 0 0;}
+    100% {background-position: -600px 0;}
+}
+@keyframes jump {
+    0% {background-position: 0 -60px;}
+    100% {background-position: -1200px -60px;}
+}
+
+@keyframes run {
+    0% {background-position: 0 -120px;}
+    100% {background-position: -360px -120px;}
+}
+
+@keyframes attack {
+    0% {background-position: 0 -180px;}
+    100% {background-position: -720px -180px;}
+}  

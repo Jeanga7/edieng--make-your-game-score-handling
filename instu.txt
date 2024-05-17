@@ -1,0 +1,24 @@
+Instructions
+
+Bienvenue dans "Anachronos" ! Vous incarnez un jeune étudiant qui a été transporté dans un monde ancien et mystérieux à la suite d'une erreur de manipulation lors de ses recherches. Votre mission est de survivre, d'échapper aux gardiens de chaque monde et de collecter des artefacts pour progresser à travers les époques et retrouver votre chemin vers le présent.
+
+Contrôles :
+
+    Utilisez les touches fléchées (ou WASD) pour vous déplacer.
+    Appuyez sur la touche Espace pour sauter.
+    Appuyez à nouveau en l'air pour effectuer un double saut.
+    Collectez des bonus pour améliorer votre score et déverrouiller de nouveaux mondes.
+
+Objectif :
+
+    Traversez chaque monde en évitant les obstacles et en échappant aux gardiens.
+    Collectez autant d'artefacts que possible pour progresser à travers les époques.
+    Atteignez la fin de chaque niveau pour accéder au monde suivant.
+
+Gardez à l'esprit :
+
+    Chaque monde possède ses propres défis et dangers uniques.
+    Certains bonus peuvent vous aider à survivre, tandis que d'autres peuvent être des pièges.
+    Utilisez vos compétences d'observation et de réflexes pour éviter les dangers et surmonter les obstacles.
+
+Bonne chance !
