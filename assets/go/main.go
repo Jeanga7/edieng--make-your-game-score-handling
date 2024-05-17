@@ -16,7 +16,11 @@ type Scoreboard struct {
 
 // / get the score of the players not the actual player
 func GetScoreBoard(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
 
+	} else {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
 }
 
 func MarshallMather(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +39,16 @@ func MarshalGeocodeResponse(response Scoreboard) ([]byte, error) {
 
 // / put the score of the player
 func PostScoreBoard(w http.ResponseWriter, r *http.Request) {
-
+	if r.Method == "POST" {
+		var Donnees Scoreboard
+		err := json.NewDecoder(r.Body).Decode(&Donnees)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+	} else {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
 }
 
 func main() {
@@ -56,6 +69,9 @@ func main() {
 
 	http.HandleFunc("/", Homepage)
 	http.HandleFunc("/scores", ScoreHandler)
+	http.HandleFunc("/post", PostScoreBoard)
+	http.HandleFunc("/get", GetScoreBoard)
+
 	fmt.Println("http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 
