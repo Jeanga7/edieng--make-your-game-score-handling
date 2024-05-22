@@ -4,8 +4,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
+
+	"github.com/gorilla/websocket"
 )
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+}
 
 type Scoreboard struct {
 	Rank  string `json:"rank"`
@@ -15,13 +23,13 @@ type Scoreboard struct {
 }
 
 // / get the score of the players not the actual player
-func GetScoreBoard(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
+// func GetScoreBoard(w http.ResponseWriter, r *http.Request) {
+// 	if r.Method == "GET" {
 
-	} else {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-	}
-}
+// 	} else {
+// 		w.WriteHeader(http.StatusMethodNotAllowed)
+// 	}
+// }
 
 func MarshallMather(w http.ResponseWriter, r *http.Request) {
 	// jsonResponse, err := MarshalGeocodeResponse(res)
@@ -38,16 +46,39 @@ func MarshalGeocodeResponse(response Scoreboard) ([]byte, error) {
 }
 
 // / put the score of the player
-func PostScoreBoard(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		var Donnees Scoreboard
-		err := json.NewDecoder(r.Body).Decode(&Donnees)
+// func PostScoreBoard(w http.ResponseWriter, r *http.Request) {
+// 	if r.Method == "POST" {
+// 		var Donnees Scoreboard
+// 		err := json.NewDecoder(r.Body).Decode(&Donnees)
+// 		if err != nil {
+// 			http.Error(w, err.Error(), http.StatusBadRequest)
+// 			return
+// 		}
+// 	} else {
+// 		w.WriteHeader(http.StatusMethodNotAllowed)
+// 	}
+// }
+
+func WSendpoint(w http.ResponseWriter, r *http.Request) {
+	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	defer ws.Close()
+
+	for {
+		messageType, message, err := ws.ReadMessage()
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			log.Println(err)
 			return
 		}
-	} else {
-		w.WriteHeader(http.StatusMethodNotAllowed)
+		log.Println(string(message))
+		if messageType == websocket.TextMessage {
+
+		}
 	}
 }
 
@@ -68,9 +99,9 @@ func main() {
 	http.Handle("/audio/", http.StripPrefix("/audio/", audio_ser))
 
 	http.HandleFunc("/", Homepage)
-	http.HandleFunc("/scores", ScoreHandler)
-	http.HandleFunc("/post", PostScoreBoard)
-	http.HandleFunc("/get", GetScoreBoard)
+	// http.HandleFunc("/scores", ScoreHandler)
+	// http.HandleFunc("/post", PostScoreBoard)
+	http.HandleFunc("/get", WSendpoint)
 
 	fmt.Println("http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
@@ -88,14 +119,14 @@ func Homepage(w http.ResponseWriter, r *http.Request) {
 }
 
 // score handler
-func ScoreHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("../../Score.html")
-	if err != nil {
-		http.Error(w, "Error 404", http.StatusNotFound)
-	}
-	tmpl.Execute(w, nil)
+// func ScoreHandler(w http.ResponseWriter, r *http.Request) {
+// 	tmpl, err := template.ParseFiles("../../Score.html")
+// 	if err != nil {
+// 		http.Error(w, "Error 404", http.StatusNotFound)
+// 	}
+// 	tmpl.Execute(w, nil)
 
-}
+// }
 
 // to render the html pages
 func Render(w http.ResponseWriter) {
