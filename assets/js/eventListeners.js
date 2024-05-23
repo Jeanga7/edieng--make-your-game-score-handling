@@ -75,6 +75,14 @@ function showMainMenuModal() {
     document.querySelector("#getInModal").classList.add("hidden");
 }
 
+//handle getin button
+function Submit(){
+    document.querySelector("#getIn").addEventListener("click", (e) => {
+        e.preventDefault()
+        
+    })  
+}
+
 let isPageRefreshed = false;
 document.querySelectorAll("#main-menu, #btn_mainmenu_GO").forEach(btn => {
     btn.addEventListener('click', () => {

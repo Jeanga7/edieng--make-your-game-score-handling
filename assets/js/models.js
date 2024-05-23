@@ -68,7 +68,7 @@ class Character {
             if (this.type === "enemy" || movingPlayer) {
                 this.position.x += (this.velocity.x * this.speedUp);
                 this.distance += (this.velocity.x * this.speedUp);
-                console.log(`Distance of ${this.type} = ${this.distance+this.initialPos.x}`);
+                // console.log(`Distance of ${this.type} = ${this.distance+this.initialPos.x}`);
                 
             }
 

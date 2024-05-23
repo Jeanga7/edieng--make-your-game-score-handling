@@ -21,7 +21,10 @@ import {
     addPauseContinue
 } from "./eventListeners.js";
 
+
+
 export function game(sceneElements, obstacles, enemies, bg, duration, end) {
+    
     killGame()
     hideModals()
     gameData.isGameOver = false

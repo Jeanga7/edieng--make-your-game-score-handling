@@ -45,6 +45,8 @@ export {
   killGame
 };
 
+
+
 var gameData = {
   countdownTime: 240,
   duration: 240,
@@ -82,7 +84,27 @@ function Timer(t) {
   }, t);
 }
 
+function WsConnection() {
+  var ws = new WebSocket("ws://localhost:8080/get")
+
+  ws.onopen = () => {
+    console.log("Websocket on!!!");
+    ws.send(JSON.stringify({
+      rank: "2",
+      score: "260",
+      name: "Rest",
+      time: "3:00",
+    }))
+  }
+
+
+  ws.onmessage = (e) => {
+    console.log("waza", e.data);
+  }
+}
+
 function gameOver() {
+  WsConnection()
   showStats();
   killGame()
   gameOverModal.style.display = "flex";
@@ -374,8 +396,8 @@ function handleCollision(char) {
         obstacleIndex = i;
       }
     }
-  });  
-  
+  });
+
   if (newObstacleType !== gameData.lastObstacleType) {
     gameData.lastObstacleType = newObstacleType;
     if (gameData.lastObstacleType === "coin") {
@@ -474,7 +496,7 @@ function shouldDisplayPauseMenu() {
 
 // ///////////////////////////////
 function updateObstacles() {
-  
+
 }
 
 function charactersLoop(end) {
