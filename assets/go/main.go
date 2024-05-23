@@ -97,7 +97,11 @@ func WSendpoint(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println("Readjson error:", err)
 	}
+	
 	fmt.Println("receive", string(message))
+	
+
+
 	ws.WriteJSON(Scoreboard{
 		Rank:  "1",
 		Score: "360",
