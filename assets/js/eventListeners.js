@@ -116,12 +116,31 @@ document.addEventListener('keyup', (event) => {
     }
 });
 
+function Time() {
+  
+    // Start the timer
+    var timer = setInterval(function () {
+        if (!gameData.paused) {
+            gameData.time++
+            console.log(gameData.time);
+        } else {
+            // clearInterval(gameData.timeLoop);
+        }
+        if (gameData.isGameOver){
+            clearInterval(timer);
+        }
+    }, 1000);
+}
+
+// Example usage:
+// Call Timer() function to start the timer
+
+
 document.querySelector("#play").addEventListener('click', () => {
     audio.pause();
     music.pause();
     audio.currentTime = 0;
     currentIndex = 0;
-
     document.querySelector('#mainMenuModal').classList.add("hidden");
     [gameData.paused, gameData.levelEndPause, gameData.timeLoop, gameData.totalScore, gameData.lives, gameData.coins, gameData.levelScore, gameData.distance] = [false, false, null, 0, 3, 0, 0, 0];
     hideModals()
@@ -129,6 +148,7 @@ document.querySelector("#play").addEventListener('click', () => {
         alert("Add levels to the game.")
         window.location.reload()
     } else {
+        Time()
         game(levels[0].scene, levels[0].obstacles, levels[0].enemies, levels[0].background, levels[0].duration, levels[0].end);
     }
 })

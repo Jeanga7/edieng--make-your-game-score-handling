@@ -21,7 +21,7 @@ type Scoreboard struct {
 	Rank  string `json:"rank"`
 	Name  string `json:"name"`
 	Score int    `json:"score"`
-	Time  string `json:"time"`
+	Time  int `json:"time"`
 }
 
 // / get the score of the players not the actual player

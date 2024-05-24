@@ -58,6 +58,7 @@ var gameData = {
   lives: 3,
   coins: 0,
   levelScore: 0,
+  time: 0,
   distance: 0,
   obstacles: [],
   characters: [],
@@ -98,11 +99,12 @@ function WsConnection() {
       // Get the username input
       var username = document.getElementById("input_name").value;
 
+      var t = toString(gameData.time)
       const jsonData = {
         rank: "2",
         score: gameData.totalScore,
         name: username,
-        time: "3:00",
+        time: gameData.time,
       };
 
       const jsonString = JSON.stringify(jsonData);
