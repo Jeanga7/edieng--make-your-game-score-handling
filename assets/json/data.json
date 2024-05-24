@@ -1,1 +1,44 @@
-{"rank":"2","score":0,"name":"Rest","time":"3:00"}{"rank":"2","score":50,"name":"goudj","time":"[object Undefined]"}{"rank":"2","score":0,"name":"t","time":"[object Undefined]"}{"rank":"2","score":0,"name":"tt","time":6}{"rank":"2","score":0,"name":"<h1>test</h1>","time":6}{"rank":"2","score":0,"name":"<h1>test</h1>","time":6}{"rank":"2","score":0,"name":"<h1>test</h1>","time":6}
+[
+    {
+        "rank": "2",
+        "score": 0,
+        "name": "Rest",
+        "time": "3:00"
+    },
+    {
+        "rank": "2",
+        "score": 50,
+        "name": "goudj",
+        "time": "[object Undefined]"
+    },
+    {
+        "rank": "2",
+        "score": 0,
+        "name": "t",
+        "time": "[object Undefined]"
+    },
+    {
+        "rank": "2",
+        "score": 0,
+        "name": "tt",
+        "time": 6
+    },
+    {
+        "rank": "2",
+        "score": 0,
+        "name": "<h1>test</h1>",
+        "time": 6
+    },
+    {
+        "rank": "2",
+        "score": 0,
+        "name": "<h1>test</h1>",
+        "time": 6
+    },
+    {
+        "rank": "2",
+        "score": 0,
+        "name": "<h1>test</h1>",
+        "time": 6
+    }
+]

@@ -21,7 +21,7 @@ type Scoreboard struct {
 	Rank  string `json:"rank"`
 	Name  string `json:"name"`
 	Score int    `json:"score"`
-	Time  int `json:"time"`
+	Time  int    `json:"time"`
 }
 
 // / get the score of the players not the actual player
@@ -108,6 +108,8 @@ func WSendpoint(w http.ResponseWriter, r *http.Request) {
 			log.Println("Error unmarshaling JSON:", err)
 			continue
 		}
+
+		fmt.Println("this is result", result)
 
 		filePath := "../json/data.json"
 		file, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
