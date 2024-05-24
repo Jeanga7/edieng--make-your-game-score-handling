@@ -22,6 +22,7 @@ import {
   showHistory
 } from "./history.js";
 
+
 export {
   gameData,
   Timer,
@@ -85,31 +86,52 @@ function Timer(t) {
 }
 
 function WsConnection() {
-  var ws = new WebSocket("ws://localhost:8080/get")
+  var ws = new WebSocket("ws://localhost:8080/get");
 
   ws.onopen = () => {
     console.log("Websocket on!!!");
-    ws.send(JSON.stringify({
-      rank: "2",
-      score: "260",
-      name: "Rest",
-      time: "3:00",
-    }))
-  }
 
+    // Event listener for getting username input
+    document.getElementById("getIn").addEventListener("click", function(e) {
+      e.preventDefault(); 
+
+      // Get the username input
+      var username = document.getElementById("input_name").value;
+
+      const jsonData = {
+        rank: "2",
+        score: gameData.totalScore,
+        name: username,
+        time: "3:00",
+      };
+
+      const jsonString = JSON.stringify(jsonData);
+
+      // Convert the string to a Blob
+      const blob = new Blob([jsonString], {type: 'application/json'});
+
+      ws.send(blob);
+    });
+  };
 
   ws.onmessage = (e) => {
-    console.log("waza", e.data);
-  }
+    console.log("Received message:", e.data);
+  };
 }
 
+
+
+
 function gameOver() {
+  document.querySelector("#getInModal").style.display = "flex";
+  document.querySelector("#getInModal").classList.remove("hidden");
+  // Submit()
   WsConnection()
   showStats();
   killGame()
-  gameOverModal.style.display = "flex";
-  document.querySelector("#game-over-text").textContent = "GameOver"
-  gameOverModal.classList.remove("hidden");
+  // gameOverModal.style.display = "flex";
+  // document.querySelector("#game-over-text").textContent = "GameOver"
+  // gameOverModal.classList.remove("hidden");
   gameData.isGameOver = true;
 }
 

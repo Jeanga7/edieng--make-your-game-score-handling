@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/websocket"
 )
@@ -19,7 +20,7 @@ var upgrader = websocket.Upgrader{
 type Scoreboard struct {
 	Rank  string `json:"rank"`
 	Name  string `json:"name"`
-	Score string `json:"score"`
+	Score int    `json:"score"`
 	Time  string `json:"time"`
 }
 
@@ -84,31 +85,61 @@ var Ws *websocket.Conn
 
 func WSendpoint(w http.ResponseWriter, r *http.Request) {
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
-	ws, err := upgrader.Upgrade(w, r, nil)
-	// Fetchage()
+	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	// defer ws.Close()
-	// Ws = ws
+	defer conn.Close()
 
-	_, message, err := ws.ReadMessage()
-	if err != nil {
-		log.Println("Readjson error:", err)
+	for {
+		_, msg, err := conn.ReadMessage()
+		if err != nil {
+			log.Println("Read error:", err)
+			break
+		}
+
+		var result Scoreboard
+
+		fmt.Println("this is msg", string(msg))
+
+		err = json.Unmarshal(msg, &result)
+		if err != nil {
+			log.Println("Error unmarshaling JSON:", err)
+			continue
+		}
+
+		filePath := "../json/data.json"
+		file, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			fmt.Println("Erreur lors de l'ouverture du fichier :", err)
+			return
+		}
+		defer file.Close()
+
+		// Écriture dans le fichier
+		_, err = file.Write(msg)
+		if err != nil {
+			fmt.Println("Erreur lors de l'écriture dans le fichier :", err)
+			return
+		}
+
+		scoreboard := Scoreboard{
+			Rank:  result.Rank,
+			Score: result.Score,
+			Name:  result.Name,
+			Time:  result.Time,
+		}
+
+		fmt.Println("Received:", scoreboard)
+
+		// Responding with a new Scoreboard object
+		// err = conn.WriteJSON(scoreboard)
+		// if err != nil {
+		// 	log.Println("Error writing JSON:", err)
+		// 	break
+		// }
 	}
-	
-	fmt.Println("receive", string(message))
-	
-
-
-	ws.WriteJSON(Scoreboard{
-		Rank:  "1",
-		Score: "360",
-		Name:  "Test",
-		Time:  "3:00",
-	})
-	// Sender()
 }
 
 // func Sender() {
