@@ -433,46 +433,42 @@ span#line {
 }
 
 #getInModal {
+    display: none; 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 5000;
+}
+
+#scoreForm {
     display: flex;
-    align-items: center;
-    justify-content: space-evenly;
     flex-direction: column;
-    position: absolute;
-    width: 20%;
-    height: 25%;
-    z-index: 1000;
-    background-color: rgb(151, 150, 150);
-    border-radius: 25px;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-    display: none;
 }
 
 #input_name {
-    height: 30%;
-    width: 80%;
-    font-size: 17px;
-    border-radius: 10px;
-    border-style: groove;
-    border-color: black;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
-    outline: none;
-    z-index: 2000;
-    pointer-events: auto;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
 }
 
 #getIn {
-    height: 20%;
-    width: 80%;
-    border-radius: 15px;
-    background-color: rgb(134, 90, 33);
-    font-size: large;
-    font-weight: bolder;
-    border-color: black;
-    box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.9);
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
 #getIn:hover {
-    transform: scale(1.03);
+    background-color: #37813b;
 }
 
 #play_history {
@@ -665,13 +661,17 @@ span#line {
     display: none !important;
 }
 
+
+/* score handling */
+
 #scoreboard {
     position: absolute;
-    height: 50%;
-    width: 50%;
+    /* height: 50%;
+    width: 50%; */
     background-color: gray;
     margin: 20px auto;
     max-width: 600px;
+    padding: 2%;
     border: 1px solid #030303;
     border-radius: 5px;
     overflow: hidden;
@@ -721,11 +721,11 @@ span#line {
 }
 
 #pagination button:hover {
-    background-color: #ddd;
+    background-color: #969191;
 }
 
 #pagination .active {
-    background-color: #333;
+    background-color: #3b3838;
     color: #fff;
 }
 
@@ -740,4 +740,16 @@ span#line {
 
 #closeButton:hover {
     color: #f00;
+}
+
+.highlight {
+    background-color: #ffeb3b !important;
+}
+
+#congratsMessage {
+    font-size: 16px;
+    font-weight: bolder;
+    margin-bottom: 10px;
+    color: #fffcfc;
+    text-align: center;
 }
