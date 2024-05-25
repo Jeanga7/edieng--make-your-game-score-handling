@@ -9,8 +9,8 @@
     <script>
         var username;
         const playersInfos = [
-            {number: 1, name: "Diomay"},
-            {number: 2, name: "Sitoe"}
+            { number: 1, name: "Diomay" },
+            { number: 2, name: "Sitoe" }
         ]
         var selectedPlayer = 0;
     </script>
@@ -23,11 +23,29 @@
 
     <!-- get in modal -->
     <div id="getInModal">
-        <form method="post">
-            <input type="text" id="input_name" name="username" placeholder="Enter your username please!">
-            <button type="button" id="getIn">GET IN</button>
+        <form id="scoreForm">
+            <input type="text" id="input_name" placeholder="Enter your name" required />
+            <button type="submit" id="getIn">Submit</button>
         </form>
     </div>
+
+    <!-- score handling -->
+    <div id="scoreboard">
+        <table id="scoreTable">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+
+            </tbody>
+        </table>
+    </div>
+    
 
     <!-- main menu page -->
     <div id="mainMenuModal">
@@ -163,11 +181,11 @@
 
 
 
-    <script type="module">
+    <!-- <script type="module">
         document.querySelector('#getIn').addEventListener('click', () => {
             username = document.querySelector('#input_name').value;
         });
-    </script>
+    </script> -->
     <script src="/js/game.mjs" type="module"></script>
     <script src="/js/levels.js" type="module"></script>
     <script src="/js/utils.js" type="module"></script>

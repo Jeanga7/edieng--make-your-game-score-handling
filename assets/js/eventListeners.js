@@ -75,13 +75,13 @@ function showMainMenuModal() {
     document.querySelector("#getInModal").classList.add("hidden");
 }
 
-//handle getin button
-function Submit(){
-    document.querySelector("#getIn").addEventListener("click", (e) => {
-        e.preventDefault()
+// //handle getin button
+// function Submit(){
+//     document.querySelector("#getIn").addEventListener("click", (e) => {
+//         e.preventDefault()
         
-    })  
-}
+//     })  
+// }
 
 let isPageRefreshed = false;
 document.querySelectorAll("#main-menu, #btn_mainmenu_GO").forEach(btn => {
@@ -122,7 +122,7 @@ function Time() {
     var timer = setInterval(function () {
         if (!gameData.paused) {
             gameData.time++
-            console.log(gameData.time);
+            // console.log(gameData.time);
         } else {
             // clearInterval(gameData.timeLoop);
         }

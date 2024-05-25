@@ -92,16 +92,14 @@ function WsConnection() {
   ws.onopen = () => {
     console.log("Websocket on!!!");
 
-    // Event listener for getting username input
-    document.getElementById("getIn").addEventListener("click", function(e) {
-      e.preventDefault(); 
+    document.getElementById("getIn").addEventListener("click", function (e) {
+      e.preventDefault();
 
-      // Get the username input
       var username = document.getElementById("input_name").value;
 
-      var t = toString(gameData.time)
+      // var t = toString(gameData.time);
       const jsonData = {
-        rank: "2",
+        rank: "0",
         score: gameData.totalScore,
         name: username,
         time: gameData.time,
@@ -109,24 +107,48 @@ function WsConnection() {
 
       const jsonString = JSON.stringify(jsonData);
 
-      // Convert the string to a Blob
-      const blob = new Blob([jsonString], {type: 'application/json'});
+      const blob = new Blob([jsonString], { type: 'application/json' });
 
       ws.send(blob);
+
+      document.getElementById("getInModal").style.display = "none";
     });
   };
 
   ws.onmessage = (e) => {
     console.log("Received message:", e.data);
+
+    const jsonData = JSON.parse(e.data);
+    // Get the table body  
+    var tableBody = document.getElementById("tableBody");
+    
+    tableBody.innerHTML = "";
+    
+    jsonData.forEach((data) => {
+      console.log("Rank:", data.rank);
+      console.log("Name:", data.name);
+      console.log("Score:", data.score);
+      console.log("Time:", data.time);
+      
+      var row = tableBody.insertRow(-1); 
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+      cell1.innerHTML = data.rank;
+      cell2.innerHTML = data.name;
+      cell3.innerHTML = data.score;
+      cell4.innerHTML = data.time;
+    });
+    document.getElementById("scoreboard").style.display = 'flex'
   };
 }
 
 
 
-
 function gameOver() {
-  document.querySelector("#getInModal").style.display = "flex";
   document.querySelector("#getInModal").classList.remove("hidden");
+  document.querySelector("#getInModal").style.display = "flex";
   // Submit()
   WsConnection()
   showStats();

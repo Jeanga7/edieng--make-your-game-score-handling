@@ -664,3 +664,41 @@ span#line {
 .hidden {
     display: none !important;
 }
+
+#scoreboard {
+    position: absolute;
+    height: 50%;
+    width: 50%;
+    background-color: gray;
+    margin: 20px auto;
+    max-width: 600px;
+    border: 1px solid #030303;
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 2000;
+    display: none;
+}
+
+#scoreTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#scoreTable th,
+#scoreTable td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #686868;
+}
+
+#scoreTable th {
+    background-color: #f2f2f2;
+}
+
+#scoreTable tbody tr:nth-child(even) {
+    background-color: #717b9c;
+}
+
+#scoreTable tbody tr:hover {
+    background-color: #b9b5b5;
+}
