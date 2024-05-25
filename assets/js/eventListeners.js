@@ -9,6 +9,7 @@ import {
 import {
     levels
 } from "./levels.js"
+import { WsConnection } from "./score.handling.js"
 import {
     gameData,
     hideModals,
@@ -79,7 +80,7 @@ function showMainMenuModal() {
 // function Submit(){
 //     document.querySelector("#getIn").addEventListener("click", (e) => {
 //         e.preventDefault()
-        
+
 //     })  
 // }
 
@@ -117,7 +118,7 @@ document.addEventListener('keyup', (event) => {
 });
 
 function Time() {
-  
+
     // Start the timer
     var timer = setInterval(function () {
         if (!gameData.paused) {
@@ -126,7 +127,7 @@ function Time() {
         } else {
             // clearInterval(gameData.timeLoop);
         }
-        if (gameData.isGameOver){
+        if (gameData.isGameOver) {
             clearInterval(timer);
         }
     }, 1000);
@@ -157,6 +158,7 @@ document.querySelectorAll("#btn_classement_GO, #btn_classement_win").forEach(but
     button.addEventListener('click', () => {
         document.querySelector("#getInModal").style.display = "flex";
         document.querySelector("#getInModal").classList.remove("hidden");
+        WsConnection()
     });
 });
 
@@ -218,3 +220,8 @@ document.querySelectorAll(".changePlayer").forEach(el => {
         setPlayerSkin()
     })
 })
+
+document.getElementById("closeButton").addEventListener("click", function () {
+    document.getElementById("scoreboard").style.display = "none";
+    window.location.reload()
+});
