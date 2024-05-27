@@ -26,6 +26,7 @@ import { removeKeyListener } from "./eventListeners.js";
 export {
   gameData,
   Timer,
+  Time,
   gameOver,
   randomInterval,
   checkCollision,
@@ -61,12 +62,30 @@ var gameData = {
   obstacles: [],
   characters: [],
   isGameOver: false,
+  time:0,
   levelEndPause: false,
   isAttacking: false,
   viewport: {
     left: 0,
     top: 0
   }
+  
+}
+
+function Time() {
+  
+  // Start the timer
+  var timer = setInterval(function () {
+      if (!gameData.paused) {
+          gameData.time++
+          // console.log(gameData.time);
+      } else {
+          // clearInterval(gameData.timeLoop);
+      }
+      if (gameData.isGameOver){
+          clearInterval(timer);
+      }
+  }, 1000);
 }
 
 // Start animation

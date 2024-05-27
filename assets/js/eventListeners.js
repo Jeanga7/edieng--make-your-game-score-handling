@@ -13,7 +13,8 @@ import {
     hideModals,
     pauseGame,
     restartGame,
-    setPlayerSkin
+    setPlayerSkin,
+    Time
 } from "./utils.js"
 
 import { WsConnection } from "./score.handling.js"
@@ -173,6 +174,7 @@ document.body.addEventListener("click", async (event) => {
         await loadLevelsData();
 
         if (levelsData && levelsData && levelsData.length > 0) {
+            Time()
             game(levelsData[0].scene, levelsData[0].obstacles, levelsData[0].enemies, levelsData[0].background, levelsData[0].duration, levelsData[0].end);
         } else {
             alert("Add levels to the game.")

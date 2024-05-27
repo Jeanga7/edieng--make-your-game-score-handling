@@ -9,7 +9,8 @@ import {
     gameData,
     hideModals,
     animate,
-    killGame
+    killGame,
+    Time
 } from "./utils.js";
 import {
     img
