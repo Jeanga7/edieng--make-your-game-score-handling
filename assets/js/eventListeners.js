@@ -1,4 +1,4 @@
-import { audio, music, runAudio,audios } from "./constants.js";
+import { audio, music, runAudio, audios } from "./constants.js";
 import {
     game
 } from "./game.js"
@@ -132,18 +132,18 @@ document.addEventListener('keyup', (event) => {
     }
 });
 
-audio.addEventListener('ended', () => {
-    gameData.currentIndex = (gameData.currentIndex + 1) % audios.length;
-    if (gameData.currentIndex === 0) {
-        audio.pause();
-        music.pause();
-    } else {
-        music.volume = 0.2;
-        audio.src = audios[gameData.currentIndex];
-        audio.play();
-        music.play();
-    }
-});
+// audio.addEventListener('ended', () => {
+//     gameData.currentIndex = (gameData.currentIndex + 1) % audios.length;
+//     if (gameData.currentIndex === 0) {
+//         audio.pause();
+//         music.pause();
+//     } else {
+//         music.volume = 0.2;
+//         audio.src = audios[gameData.currentIndex];
+//         audio.play();
+//         music.play();
+//     }
+// });
 
 let match = (event, selector) => event.target.matches(selector)
 
@@ -160,7 +160,7 @@ document.body.addEventListener("click", async (event) => {
     } else if (match(event, "#play")) {
         document.querySelector("#preloader-screen").classList.remove("hidden");
         hidePreloader(1500)
-        
+
         audio.pause();
         music.pause();
         audio.currentTime = 0;
@@ -169,9 +169,9 @@ document.body.addEventListener("click", async (event) => {
         document.querySelector('#mainMenuModal').classList.add("hidden");
         [gameData.paused, gameData.levelEndPause, gameData.timeLoop, gameData.totalScore, gameData.lives, gameData.coins, gameData.levelScore, gameData.distance] = [false, false, null, 0, 3, 0, 0, 0];
         hideModals()
-        
+
         await loadLevelsData();
-    
+
         if (levelsData && levelsData && levelsData.length > 0) {
             game(levelsData[0].scene, levelsData[0].obstacles, levelsData[0].enemies, levelsData[0].background, levelsData[0].duration, levelsData[0].end);
         } else {
