@@ -1,15 +1,5 @@
-import {
-    img,
-    gravity,
-    world,
-    playerInitialPosition,
-    playerDims,
-    numberOfEnemies
-} from "./constants.js";
-import {
-    gameData,
-    randomInterval
-} from "./utils.js";
+import { img, gravity, world, playerInitialPosition, playerDims, imgStorage } from "./constants.js";
+import { gameData } from "./utils.js";
 export {
     Character,
     Player,
@@ -21,64 +11,95 @@ export {
 
 class Character {
     constructor(type, pos, dims, mobile = true, speedUp = 1) {
-        this.position = {
+        this.initialPos = {
             x: pos.x,
             y: pos.y
         };
-        this.initialPos = Object.assign({}, this.position)
-        this.distance = 0
         this.type = type
+        this.distance = this.initialPos.x
+        this.altitude = this.initialPos.y
         this.velocity = {
             x: 0,
             y: 0
         };
-        this.onground = true
+        this.onground = false
         this.mobile = mobile
         this.speedUp = speedUp
         this.width = dims.w;
         this.height = dims.h;
-        this.element = document.createElement('span');
-        this.element.style.zIndex = "999"
+        this.element = {}
+        this.element.box = document.createElement('span');
+        this.element.skin = document.createElement('span');
+        this.element.box.style.zIndex = "999"
         if (type === "player") {
-            this.element.id = type;
+            this.element.box.id = type;
             this.live = 3
+            let playerName = document.createElement("span")
+            playerName.style.display = "flex"
+            playerName.style.flexDirection = "column"
+            playerName.style.alignItems = "center"
+            playerName.innerHTML = `<span style="font-family:'Arial';font-size:0.8em">${playersInfos[selectedPlayer].name}</span><span>▼</span>`
+            this.element.box.appendChild(playerName)
+            // console.log("Height before: " + this.height);
         } else {
-            this.element.className = type
+            this.element.skin.className = type
         }
-        world.appendChild(this.element);
+        this.element.box.appendChild(this.element.skin);
+        world.appendChild(this.element.box);
         this.created = false
         this.draw()
     }
 
+    move() {
+        this.element.box.style.transform = `translate(${this.distance}px, ${world.clientHeight-this.height-this.altitude}px)`;
+    }
+
     draw() {
         if (!this.created) {
-            this.element.style.width = `${this.width}px`
-            this.element.style.height = `${this.height}px`
-            this.element.style.overflow = "hidden"
+            this.element.box.style.overflow = "hidden"
+            this.element.box.style.display = "flex"
+            this.element.box.style.flexDirection = "column"
+            this.element.box.style.position = "absolute"
+
+            this.element.skin.style.overflow = "hidden"
+            this.element.skin.style.position = "relative"
+            this.element.skin.style.margin = "auto"
+            this.element.skin.style.width = `${this.width}px`
+            this.element.skin.style.height = `${this.height}px`
+
+            if (this.type === "player") {
+                this.height = this.element.box.getBoundingClientRect().height
+            }
+            this.move()
             this.created = true
-        } else {
-            this.element.style.left = `${this.position.x}px`;
-            this.element.style.bottom = `${this.position.y}px`;
+        } else if (this.mobile) {
+            this.move()
         }
     }
 
     update() {
-        if (this.mobile) {
-            let movingPlayer = this.type === "player" && (gameData.keys.left.pressed || gameData.keys.right.pressed)
-            if (this.type === "enemy" || movingPlayer) {
-                this.position.x += (this.velocity.x * this.speedUp);
-                this.distance += (this.velocity.x * this.speedUp);
-                // console.log(`Distance of ${this.type} = ${this.distance+this.initialPos.x}`);
-                
-            }
+        let changes = {
+            x: false,
+            y: false
+        }
+        let movingPlayer = this.type === "player" &&
+            (gameData.keys.left.pressed || gameData.keys.right.pressed)
 
-            this.position.y += this.velocity.y;
-            if (this.position.y + this.velocity.y <= world.clientHeight) {
-                this.velocity.y += gravity;
-            } else {
-                this.velocity.y = 0;
-            }
+        if (this.type === "enemy" || movingPlayer) {
+            this.distance += (this.velocity.x * this.speedUp);
+            changes.x = true
+        }
 
+        this.altitude += this.velocity.y;
+        changes.y = true
+
+        if (this.altitude + this.velocity.y <= world.clientHeight) {
+            this.velocity.y += gravity;
+        } else {
+            this.velocity.y = 0;
+        }
+
+        if (changes.x || changes.y) {
             this.draw();
         }
     }
@@ -87,26 +108,27 @@ class Character {
 class Player extends Character {
     constructor(position) {
         super("player", playerInitialPosition, playerDims)
-        this.element.style.backgroundImage = `url('${img[this.type]}')`
-        this.element.classList.add("idle")
+        this.element.skin.style.backgroundImage = `url('${img[this.type]}')`
+        this.element.skin.classList.add("idle")
         this.power = false
     }
 }
 
 class Enemy extends Character {
-    constructor(pos, mobile, speedUp) {
-        super("enemy", pos, {
+    constructor(pos, mobile, speedUp, skin, dims) {
+        dims = dims ?? {
             w: 50,
             h: 60
-        }, mobile, speedUp)
-        let imgName = img[this.type + "_" + randomInterval(1, numberOfEnemies)]
-        this.element.style.backgroundImage = `url('${imgName}')`
+        }
+        super("enemy", pos, dims, mobile, speedUp)
+
+        this.element.skin.style.backgroundImage = `url('${imgStorage+skin}.gif')`
         this.direction = 1
     }
 
     turn() {
         this.direction = -this.direction
-        this.element.style.transform = `scaleX(${this.direction})`;
+        this.element.skin.style.transform = `scaleX(${this.direction})`;
     }
 }
 

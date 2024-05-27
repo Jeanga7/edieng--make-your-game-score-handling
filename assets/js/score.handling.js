@@ -12,11 +12,12 @@ function WsConnection() {
             e.preventDefault();
 
             playerName = document.getElementById("input_name").value;
-
+            
+            var test = encodeURIComponent(playerName)
             const jsonData = {
                 rank: "0",
                 score: gameData.totalScore,
-                name: playerName,
+                name: test,
                 time: gameData.time,
             };
 
@@ -39,7 +40,7 @@ function WsConnection() {
 }
 
 function displayScoreboard(jsonData, playerName) {
-    const itemsPerPage = 10;
+    const itemsPerPage = 5;
     const totalPages = Math.ceil(jsonData.length / itemsPerPage);
     let currentPage = 1;
 

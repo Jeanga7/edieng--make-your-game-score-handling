@@ -1,0 +1,280 @@
+{
+  "scene": [
+    {
+      "pos": {
+        "x": 800,
+        "y": 20
+      },
+      "size": {
+        "w": 300,
+        "h": 300
+      },
+      "type": "sun",
+      "cssPosition": "fixed"
+    },
+    {
+      "pos": {
+        "x": 2800,
+        "y": -20
+      },
+      "size": {
+        "w": 682,
+        "h": 302
+      },
+      "type": "scene1",
+      "cssPosition": "absolute"
+    },
+    {
+      "pos": {
+        "x": 1800,
+        "y": 20
+      },
+      "size": {
+        "w": 470.2,
+        "h": 196.2
+      },
+      "type": "scene2",
+      "cssPosition": "absolute"
+    },
+    {
+      "pos": {
+        "x": 4100,
+        "y": 150
+      },
+      "size": {
+        "w": 157.5,
+        "h": 259.5
+      },
+      "type": "sphinx",
+      "cssPosition": "absolute"
+    },
+    {
+      "pos": {
+        "x": 150,
+        "y": 10
+      },
+      "size": {
+        "w": 125,
+        "h": 125
+      },
+      "type": "panneau",
+      "cssPosition": "absolute"
+    },
+    {
+      "pos": {
+        "x": 1100,
+        "y": 10
+      },
+      "size": {
+        "w": 125,
+        "h": 125
+      },
+      "type": "panneau",
+      "cssPosition": "absolute"
+    },
+    {
+      "pos": {
+        "x": 2350,
+        "y": 415
+      },
+      "size": {
+        "w": 125,
+        "h": 125
+      },
+      "type": "panneau",
+      "cssPosition": "absolute"
+    }
+  ],
+  "obstacles": [
+    {
+      "pos": {
+        "x": 1,
+        "y": 0
+      },
+      "type": "ground",
+      "size": {
+        "w": 550,
+        "h": 30
+      }
+    },
+    {
+      "pos": {
+        "x": 1050,
+        "y": 0
+      },
+      "type": "ground",
+      "size": {
+        "w": 3280,
+        "h": 30
+      }
+    },
+    {
+      "pos": {
+        "x": 250,
+        "y": 100
+      },
+      "type": "platform2",
+      "size": {
+        "w": 231,
+        "h": 72
+      }
+    },
+    {
+      "pos": {
+        "x": 680,
+        "y": 20
+      },
+      "type": "platform2",
+      "size": {
+        "w": 231,
+        "h": 72
+      }
+    },
+    {
+      "pos": {
+        "x": 1250,
+        "y": 10
+      },
+      "type": "colonne",
+      "size": {
+        "w": 176,
+        "h": 143
+      }
+    },
+    {
+      "pos": {
+        "x": 2200,
+        "y": 10
+      },
+      "type": "colonne",
+      "size": {
+        "w": 176,
+        "h": 143
+      }
+    },
+    {
+      "pos": {
+        "x": 2600,
+        "y": 10
+      },
+      "type": "status",
+      "size": {
+        "w": 153.33333333333334,
+        "h": 501.1111111111111
+      }
+    },
+    {
+      "pos": {
+        "x": 3600,
+        "y": 10
+      },
+      "type": "groundNL",
+      "size": {
+        "w": 734,
+        "h": 137
+      }
+    },
+    {
+      "pos": {
+        "x": 1900,
+        "y": 200
+      },
+      "type": "platform2",
+      "size": {
+        "w": 231,
+        "h": 72
+      }
+    },
+    {
+      "pos": {
+        "x": 2250,
+        "y": 350
+      },
+      "type": "platform2",
+      "size": {
+        "w": 231,
+        "h": 72
+      }
+    },
+    {
+      "pos": {
+        "x": 340,
+        "y": 180
+      },
+      "size": {
+        "w": 50,
+        "h": 50
+      },
+      "type": "power"
+    },
+    {
+      "pos": {
+        "x": 740,
+        "y": 95
+      },
+      "size": {
+        "w": 50,
+        "h": 50
+      },
+      "type": "life"
+    },
+    {
+      "pos": {
+        "x": 1800,
+        "y": 30
+      },
+      "size": {
+        "w": 50,
+        "h": 50
+      },
+      "type": "coin"
+    },
+    {
+      "pos": {
+        "x": 3250,
+        "y": 10
+      },
+      "size": {
+        "w": 161.66666666666666,
+        "h": 138.33333333333334
+      },
+      "type": "chameau"
+    }
+  ],
+  "enemies": [
+    {
+      "pos": {
+        "x": 1400,
+        "y": 500
+      },
+      "mobile": true,
+      "speedUp": 2,
+      "skin": "enemy1"
+    },
+    {
+      "pos": {
+        "x": 2100,
+        "y": 500
+      },
+      "mobile": true,
+      "speedUp": 1.5,
+      "skin": "enemy2"
+    },
+    {
+      "pos": {
+        "x": 2800,
+        "y": 500
+      },
+      "mobile": true,
+      "speedUp": 3,
+      "skin": "enemy4",
+      "dims": {
+        "w": 64,
+        "h": 48
+      }
+    }
+  ],
+  "background": "skyblue",
+  "duration": 120,
+  "end": 4200
+}

@@ -1,4 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Cookie&family=Holtwood+One+SC&family=Pacifico&family=Sedgwick+Ave+Display&family=Yellowtail&display=swap');
+@font-face {
+    font-family: 'Holtwood One SC';
+    src: url('../fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sedgwick Ave Display';
+    src: url('../fonts/Sedgwick_Ave_Display/SedgwickAveDisplay-Regular.ttf') format('truetype');
+    font-style: normal;
+}
 
 body {
     margin: 0;
@@ -337,13 +347,28 @@ span#line {
 /* player affichant sur le main menu et les fleches de choix du player */
 #player_main_menu {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     position: absolute;
     height: 20%;
-    width: 15%;
+    width: 180px;
     bottom: 2%;
     right: 20%;
+}
+#select_player {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+#player_name {
+    color: white;
+    font-family: 'Arial';
+    font-size: 0.9em;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
 #player_img {
@@ -433,42 +458,46 @@ span#line {
 }
 
 #getInModal {
-    display: none; 
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 5000;
-}
-
-#scoreForm {
     display: flex;
+    align-items: center;
+    justify-content: space-evenly;
     flex-direction: column;
+    position: absolute;
+    width: 20%;
+    height: 25%;
+    z-index: 1000;
+    background-color: rgb(151, 150, 150);
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+    display: none;
 }
 
 #input_name {
-    margin-bottom: 10px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 14px;
+    height: 30%;
+    width: 80%;
+    font-size: 17px;
+    border-radius: 10px;
+    border-style: groove;
+    border-color: black;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+    outline: none;
+    z-index: 2000;
+    pointer-events: auto;
 }
 
 #getIn {
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
+    height: 20%;
+    width: 80%;
+    border-radius: 15px;
+    background-color: rgb(134, 90, 33);
+    font-size: large;
+    font-weight: bolder;
+    border-color: black;
+    box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.9);
 }
 
 #getIn:hover {
-    background-color: #37813b;
+    transform: scale(1.03);
 }
 
 #play_history {
@@ -659,6 +688,82 @@ span#line {
 
 .hidden {
     display: none !important;
+}
+
+#preloader-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    z-index: 9999;
+    opacity: 1;
+    background-color: rgb(0, 119, 255);
+    transition: all 800ms ease-in-out;
+}
+#spinner {
+    margin: auto;
+    height: 5vh;
+    width: 5vh;
+    border: 10px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+    from {rotate: 0deg;}
+    to {rotate: 360deg;}
+}
+
+#controls {
+    z-index: 199;
+    color: black;
+    position: absolute;
+    bottom: 5vh;
+    right: 5vw;
+    display: none;
+    flex-direction: column;
+    gap: 2vh;
+}
+.controls-row {
+    width: 11vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.controls-btn {
+    /* background-color: rgba(255, 255, 255, 0.3); */
+    width: 10vh;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    gap: 2vh;
+    cursor: pointer;
+}
+#controls-up {
+    margin: auto;
+}
+
+#controls-up {
+    background-image: url('/assets/img/suivant.png');
+    background-position: center center;
+    background-size: cover;
+    transform: rotate(-90deg);
+}
+#controls-left {
+    background-image: url('/assets/img/suivant.png');
+    background-position: center center;
+    background-size: cover;
+    transform: rotate(-180deg);
+}
+#controls-right {
+    background-image: url('/assets/img/suivant.png');
+    background-position: center center;
+    background-size: cover;
 }
 
 

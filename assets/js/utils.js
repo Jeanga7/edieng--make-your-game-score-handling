@@ -8,15 +8,20 @@ import {
   imgStorage,
   killAudio,
   powerDuration,
-  vh,
   vw,
-  winModal
+  winModal,
 } from "./constants.js";
-import { levels } from "./levels.js";
-import { game } from "./game.mjs";
-import { showHistory } from "./history.js";
-import { WsConnection } from "./score.handling.js";
-
+import {
+  // levels
+  levelsData,
+  // loadLevelsData
+} from "./levels.js"
+import {
+  game
+} from "./game.js";
+import {
+  showHistory
+} from "./history.js";
 
 export {
   gameData,
@@ -37,11 +42,9 @@ export {
   animate,
   showStats,
   setPlayerSkin,
-  elementInViewport,
-  killGame
+  killGame,
+  charInViewport
 };
-
-
 
 var gameData = {
   countdownTime: 240,
@@ -53,13 +56,16 @@ var gameData = {
   lives: 3,
   coins: 0,
   levelScore: 0,
-  time: 0,
   distance: 0,
   obstacles: [],
   characters: [],
   isGameOver: false,
   levelEndPause: false,
   isAttacking: false,
+  viewport: {
+    left: 0,
+    top: 0
+  }
 }
 
 // Start animation
@@ -81,11 +87,7 @@ function Timer(t) {
   }, t);
 }
 
-
 function gameOver() {
-  // document.querySelector("#getInModal").classList.remove("hidden");
-  // document.querySelector("#getInModal").style.display = "flex";
-  // Submit()
   showStats();
   killGame()
   gameOverModal.style.display = "flex";
@@ -98,14 +100,14 @@ let randomInterval = (min, max) => Math.floor(Math.random() * (max - min) + min)
 
 function checkCollision(player, obstacle, contact = 0) {
   // Calculer les coordonnées des bords du joueur et de l'obstacle
-  const playerLeft = player.position.x;
+  const playerLeft = player.distance;
   const playerRight = playerLeft + player.width;
-  const playerBottom = player.position.y;
+  const playerBottom = player.altitude;
   const playerTop = playerBottom + player.height;
 
-  const obstacleLeft = obstacle.position.x;
+  const obstacleLeft = obstacle.type === "enemy" ? obstacle.distance : obstacle.position.x;
   const obstacleRight = obstacleLeft + obstacle.width;
-  const obstacleBottom = obstacle.position.y;
+  const obstacleBottom = obstacle.type === "enemy" ? obstacle.altitude : obstacle.position.y;
   const obstacleTop = obstacleBottom + obstacle.height;
 
   // Vérifier s'il y a collision
@@ -139,10 +141,10 @@ function hideModals() {
 
 function switchLevel() {
   gameData.currentLevel++;
-  if (gameData.currentLevel < levels.length) {
-    const level = levels[gameData.currentLevel];
+  showStats();
+  if (gameData.currentLevel < levelsData.length) {
+    const level = levelsData[gameData.currentLevel];
     // Notifications de fin de niveau
-    showStats();
 
     winModal.style.display = "flex";
     winModal.classList.remove("hidden");
@@ -169,7 +171,7 @@ function switchLevel() {
 }
 
 function checkEnd() {
-  if (gameData.player.position.x >= levels[gameData.currentLevel].end) {
+  if (gameData.player.distance >= levelsData[gameData.currentLevel].end) {
     switchLevel();
   }
 }
@@ -185,12 +187,12 @@ function decreaseLife() {
   if (gameData.lives >= 1) {
     gameData.totalScore -= gameData.levelScore;
     game(
-      levels[gameData.currentLevel].scene,
-      levels[gameData.currentLevel].obstacles,
-      levels[gameData.currentLevel].enemies,
-      levels[gameData.currentLevel].background,
-      levels[gameData.currentLevel].duration,
-      levels[gameData.currentLevel].end
+      levelsData[gameData.currentLevel].scene,
+      levelsData[gameData.currentLevel].obstacles,
+      levelsData[gameData.currentLevel].enemies,
+      levelsData[gameData.currentLevel].background,
+      levelsData[gameData.currentLevel].duration,
+      levelsData[gameData.currentLevel].end
     );
   } else {
     gameData.paused = true;
@@ -200,13 +202,12 @@ function decreaseLife() {
 }
 
 function camera() {
-  let playerSize = gameData.playerDims;
-
-  if (playerSize.left >= vw / 2) {
+  if (gameData.player.distance - gameData.viewport.left >= vw() / 2) {
     world.scrollLeft += 5;
+    gameData.viewport.left += 5;
   }
 
-  if (playerSize.top >= vh) {
+  if (gameData.player.altitude + gameData.player.height < 0) {
     decreaseLife();
   }
 }
@@ -222,12 +223,12 @@ function restartGame() {
   [gameData.currentLevel, gameData.lives, gameData.totalScore, gameData.levelScore, gameData.paused, gameData.levelEndPause, gameData.player, gameData.isGameOver] = [0, 3, 0, 0, false, false, null, false]
   hideModals();
   game(
-    levels[gameData.currentLevel].scene,
-    levels[gameData.currentLevel].obstacles,
-    levels[gameData.currentLevel].enemies,
-    levels[gameData.currentLevel].background,
-    levels[gameData.currentLevel].duration,
-    levels[gameData.currentLevel].end
+    levelsData[gameData.currentLevel].scene,
+    levelsData[gameData.currentLevel].obstacles,
+    levelsData[gameData.currentLevel].enemies,
+    levelsData[gameData.currentLevel].background,
+    levelsData[gameData.currentLevel].duration,
+    levelsData[gameData.currentLevel].end
   );
 }
 
@@ -236,10 +237,9 @@ function animate(end) {
   const PauseMenu = document.querySelector("#pauseModal");
 
   setTimeout(() => {
+    cancelAnimationFrame(gameData.globalAnimation)
     gameData.globalAnimation = requestAnimationFrame(animate);
   }, 0)
-
-  gameData.playerDims = gameData.player.element.getBoundingClientRect()
 
   updatePlayerScore();
 
@@ -250,7 +250,7 @@ function animate(end) {
     charactersLoop(end)
 
     // Mise à jour des obstacles
-    updateObstacles()
+    // updateObstacles()
 
     // Vérification de l'atteinte de la fin du niveau
     checkEnd();
@@ -293,6 +293,7 @@ function handleCollision(char) {
   let obstacleFound;
   let obstacleIndex;
   var found = false;
+  var onground = false;
 
 
   gameData.obstacles.forEach((obstacle, i) => {
@@ -311,9 +312,9 @@ function handleCollision(char) {
           }
         }
         // Empêcher le joueur de passer à travers l'obstacle par le haut, le bas, la gauche ou la droite
-        const playerLeft = char.position.x;
+        const playerLeft = char.distance;
         const playerRight = playerLeft + char.width;
-        const playerBottom = char.position.y;
+        const playerBottom = char.altitude;
         const playerTop = playerBottom + char.height;
         const obstacleBottom = obstacle.position.y;
         const obstacleTop = obstacleBottom + obstacle.height;
@@ -352,19 +353,17 @@ function handleCollision(char) {
           (playerLeft < obstacleRight && obstacleRight < playerRight);
 
         if (playerUnderObstacle) {
-          char.position.y = obstacleBottom - char.height;
+          char.altitude = obstacleBottom - char.height;
           char.velocity.y = 0;
         } else if (playerOverObstacle) {
-          char.position.y =
+          char.altitude =
             obstacleTop - (obstacle.type === "ground" ? 20 : 8);
           char.velocity.y = 0;
-          char.onground = true;
+          onground = true;
         } else if (playerBeforeObstacle) {
-          char.position.x = obstacleLeft - char.width; // to remove
           char.distance = obstacleLeft - char.width;
           char.velocity.x = 0;
         } else if (playerAfterObstacle) {
-          char.position.x = obstacleRight; // to remove
           char.distance = obstacleRight;
           char.velocity.x = 0;
         }
@@ -382,7 +381,7 @@ function handleCollision(char) {
   if (newObstacleType !== gameData.lastObstacleType) {
     gameData.lastObstacleType = newObstacleType;
     if (gameData.lastObstacleType === "coin") {
-      console.log("Got coin !");
+      // console.log("Got coin !");
       obstacleFound.element.remove();
       obstacleFound.taken = true;
       coinAudio.play();
@@ -390,7 +389,7 @@ function handleCollision(char) {
       addScore(20);
       gameData.coins++;
     } else if (gameData.lastObstacleType === "life") {
-      console.log("Got life !");
+      // console.log("Got life !");
       obstacleFound.element.remove();
       bonusAudio.play();
       gameData.obstacles.splice(obstacleIndex, 1);
@@ -400,13 +399,15 @@ function handleCollision(char) {
       gameData.lastObstacleType === "power" &&
       !gameData.player.power
     ) {
-      console.log("Got power !");
+      // console.log("Got power !");
       obstacleFound.element.remove();
       bonusAudio.play();
       gameData.obstacles.splice(obstacleIndex, 1);
       gameData.player.power = true;
     }
   }
+
+  char.onground = onground
 }
 
 // ////////////////////////////
@@ -414,13 +415,13 @@ function handlePlayerMovement(char) {
   if (char.type === "player") {
     if (gameData.keys.right.pressed) {
       char.velocity.x = 5;
-      char.element.style.transform = `scaleX(1)`;
+      char.element.skin.style.transform = `scaleX(1)`;
     } else if (
       gameData.keys.left.pressed &&
-      char.element.getBoundingClientRect().left > 10
+      char.distance - gameData.viewport.left > 2
     ) {
       char.velocity.x = -5;
-      char.element.style.transform = `scaleX(-1)`;
+      char.element.skin.style.transform = `scaleX(-1)`;
     } else {
       char.velocity.x = 0;
     }
@@ -432,25 +433,24 @@ function handlePlayerAnimation(char) {
   if (char.type === "player") {
     if (char.velocity.x === 0) {
       if (gameData.isAttacking) {
-        char.element.className = "attack"
+        char.element.skin.className = "attack"
       } else {
-        char.element.className = "idle";
+        char.element.skin.className = "idle";
       }
     } else {
       if (gameData.isAttacking) {
-        char.element.className = "attack"
+        char.element.skin.className = "attack"
       } else {
-        char.element.className = "run";
+        char.element.skin.className = "run";
       }
     }
   }
 }
-
 // ///////////////////////////::*
 function handlePlayerPosition(char, end) {
   if (char.type === "player") {
     if (gameData.player.onground === false) {
-      char.element.className = "jump";
+      char.element.skin.className = "jump";
     }
     if (char.x === end) {
       return true;
@@ -458,10 +458,11 @@ function handlePlayerPosition(char, end) {
     showHistory(char.distance);
   }
 }
-
 // ////////////////////////
 function updateCharacters(end, char, i) {
-  if (char.type === "player" || (elementInViewport(char.element) && char.type === "enemy")) char.update();
+  let updatableChar = char.type === "player" || (char.type === "enemy" && charInViewport(char))
+  // let updatableChar = char.mobile
+  if (updatableChar) char.update();
 
   // Vérifier les collisions avec les obstacles
   handleCollision(char)
@@ -469,16 +470,14 @@ function updateCharacters(end, char, i) {
   handlePlayerAnimation(char)
   handlePlayerPosition(char, end)
 }
-
 // ///////////////////////////////
 function shouldDisplayPauseMenu() {
   return gameData.paused && !gameData.isGameOver && !gameData.levelEndPause;
 }
 
 // ///////////////////////////////
-function updateObstacles() {
-
-}
+// function updateObstacles() {
+// }
 
 function charactersLoop(end) {
   gameData.characters.forEach((char, i) => {
@@ -492,24 +491,24 @@ function handlePlayerEnemyCollision(char, i) {
   if (char.type === "enemy") {
     if (checkCollision(gameData.player, char, 2)) {
       if (!gameData.player.power) {
-        console.log("Dead !");
+        // console.log("Dead !");
         dieAudio.play();
-        gameData.player.velocity.y -= 50;
+        decreaseLife()
       } else if (gameData.player.power) {
-        console.log("Enemy killed !");
+        // console.log("Enemy killed !");
         gameData.player.velocity.x = 0
         char.velocity.x = 0
         setTimeout(() => {
-          char.element.remove();
+          char.element.box.classList.add("hidden");
         }, 800)
         if (!gameData.isAttacking) {
           gameData.isAttacking = true
           setTimeout(() => {
-            gameData.player.element.className = "idle"
+            gameData.player.element.skin.className = "idle"
             gameData.isAttacking = false
           }, 500)
         }
-        gameData.player.element.className = "attack"
+        gameData.player.element.skin.className = "attack"
         killAudio.play();
         addScore(10);
         gameData.characters.splice(i, 1);
@@ -528,51 +527,56 @@ function showStats() {
   // handle the print of tab sta
   document
     .querySelectorAll("#timeStats_pause, #timeStats_GO, #timeStats_win")
-    .forEach(element => {
-      element.style.color = "white";
+    .forEach(el => {
+      el.style.color = "white";
     });
 
   document
     .querySelectorAll("#livesStats_pause, #livesStats_GO, #livesStats_win")
-    .forEach(element => {
+    .forEach(el => {
       if (gameData.lives >= 0) {
-        element.textContent = " ❤️ ".repeat(gameData.lives);
+        el.textContent = " ❤️ ".repeat(gameData.lives);
       } else {
-        element.textContent = "";
+        el.textContent = "";
       }
-      element.style.color = "white";
-      element.style.fontSize = "30px";
+      el.style.color = "white";
+      el.style.fontSize = "30px";
     });
 
   document
     .querySelectorAll("#scoreStats_pause, #scoreStats_GO, #scoreStats_win")
-    .forEach(element => {
-      element.textContent = `🎯 ${gameData.totalScore}`;
-      element.style.color = "white";
-      element.style.fontSize = "30px";
+    .forEach(el => {
+      el.textContent = `🎯 ${gameData.totalScore}`;
+      el.style.color = "white";
+      el.style.fontSize = "30px";
     });
 
   document
     .querySelectorAll("#timeStats_pause, #timeStats_GO, #timeStats_win")
-    .forEach(element => {
-      element.textContent = ` 🕐 ${gameData.countdownTime >= 0 ? gameData.countdownTime : 0}`;
-      element.style.fontSize = "30px";
+    .forEach(el => {
+      el.textContent = ` 🕐 ${gameData.countdownTime >= 0 ? gameData.countdownTime : 0}`;
+      el.style.fontSize = "30px";
     });
 }
 
 
 function setPlayerSkin() {
+  document.querySelector("#player_name").innerHTML = playersInfos[selectedPlayer].name
   document.querySelector("#homePlayer").style.backgroundImage = `url('/img/player-${playersInfos[selectedPlayer].number}-home.png')`
   img.player = `${imgStorage}player-${playersInfos[selectedPlayer].number}.png`
 }
 
-function elementInViewport(el) {
-  var rect = el.getBoundingClientRect();
+// function elementInViewport(el) {
+//   var rect = el.getBoundingClientRect();
 
-  return (
-    rect.top >= 0 &&
-    rect.left >= 0 &&
-    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) + rect.height && /* or $(window).height() */
-    rect.right <= (window.innerWidth || document.documentElement.clientWidth) + rect.width /* or $(window).width() */
-  );
+//   return (
+//     rect.top >= 0 &&
+//     rect.left >= 0 &&
+//     rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) + rect.height && /* or $(window).height() */
+//     rect.right <= (window.innerWidth || document.documentElement.clientWidth) + rect.width /* or $(window).width() */
+//   );
+// }
+
+function charInViewport(char) {
+  return gameData.viewport.left < char.distance + char.width && char.distance < gameData.viewport.left + vw()
 }

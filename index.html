@@ -3,30 +3,49 @@
 
 <head>
     <title>Making our Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/img/horloge.png" type="image/x-icon">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/animation.css">
     <script>
         var username;
-        const playersInfos = [
-            { number: 1, name: "Diomay" },
-            { number: 2, name: "Sitoe" }
+        const playersInfos = [{
+            number: 1,
+            name: "Diomay"
+        },
+        {
+            number: 2,
+            name: "Sitoe"
+        }
         ]
         var selectedPlayer = 0;
+
+        function hidePreloader(delay) {
+            let pl = document.querySelector("#preloader-screen")
+            setTimeout(() => {
+                pl.style.opacity = "0"
+            }, delay)
+
+            setTimeout(() => {
+                pl.classList.add("hidden")
+                pl.style.opacity = "1"
+            }, delay + 800)
+        }
     </script>
 </head>
 
 <body>
+    <div id="preloader-screen">
+        <span id="spinner"></span>
+    </div>
 
-    <!-- div principal du game 100go Prix-->
+    <!-- div principal du game -->
     <div id="world"></div>
 
     <!-- get in modal -->
     <div id="getInModal">
-        <form id="scoreForm">
-            <input type="text" id="input_name" placeholder="Enter your name" required />
-            <button type="submit" id="getIn">Submit</button>
-        </form>
+        <input type="text" id="input_name" name="username" placeholder="Enter your username please!">
+        <button type="button" id="getIn">GET IN</button>
     </div>
 
     <!-- score handling -->
@@ -48,7 +67,6 @@
         </table>
         <div id="pagination"></div>
     </div>
-    
 
     <!-- main menu page -->
     <div id="mainMenuModal">
@@ -64,9 +82,12 @@
             </div>
         </div>
         <div id="player_main_menu">
-            <div id="arrow_left" class="changePlayer"></div>
-            <div id="homePlayer" class="home-perso home-idle"></div>
-            <div id="arrow_right" class="changePlayer"></div>
+            <span id="player_name"></span>
+            <div id="select_player">
+                <div id="arrow_left" class="changePlayer"></div>
+                <div id="homePlayer" class="home-perso home-idle"></div>
+                <div id="arrow_right" class="changePlayer"></div>
+            </div>
         </div>
 
     </div>
@@ -182,18 +203,33 @@
         </div>
     </div>
 
+    <div id="controls">
+        <div class="controls-row">
+            <span class="controls-btn" id="controls-up"></span>
+        </div>
+        <div class="controls-row">
+            <span class="controls-btn" id="controls-left"></span>
+            <span class="controls-btn" id="controls-right"></span>
+        </div>
+    </div>
 
 
-    <!-- <script type="module">
+
+    <script type="module">
         document.querySelector('#getIn').addEventListener('click', () => {
             username = document.querySelector('#input_name').value;
         });
-    </script> -->
-    <script src="/js/game.mjs" type="module"></script>
+    </script>
+    <script src="/js/game.js" type="module"></script>
     <script src="/js/levels.js" type="module"></script>
     <script src="/js/utils.js" type="module"></script>
     <script src="/js/eventListeners.js" type="module"></script>
     <script src="/js/history.js" type="module"></script>
+    <script>
+        window.onload = () => {
+            hidePreloader(2000)
+        }
+    </script>
 </body>
 
 </html>

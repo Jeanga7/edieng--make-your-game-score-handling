@@ -155,16 +155,22 @@ func main() {
 	css := "../css"
 	img := "../img"
 	audio := "../audio"
+	json := "../json"
+	fonts := "../fonts"
 
 	js_ser := http.FileServer(http.Dir(js))
 	css_ser := http.FileServer(http.Dir(css))
 	img_ser := http.FileServer(http.Dir(img))
 	audio_ser := http.FileServer(http.Dir(audio))
+	json_ser := http.FileServer(http.Dir(json))
+	fonts_ser := http.FileServer(http.Dir(fonts))
 
 	http.Handle("/js/", http.StripPrefix("/js/", js_ser))
 	http.Handle("/css/", http.StripPrefix("/css/", css_ser))
 	http.Handle("/img/", http.StripPrefix("/img/", img_ser))
 	http.Handle("/audio/", http.StripPrefix("/audio/", audio_ser))
+	http.Handle("/json/", http.StripPrefix("/json/", json_ser))
+	http.Handle("/fonts/", http.StripPrefix("/fonts/", fonts_ser))
 
 	http.HandleFunc("/", Homepage)
 	http.HandleFunc("/get", WSendpoint)

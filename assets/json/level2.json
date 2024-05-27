@@ -1,0 +1,290 @@
+{
+    "scene": [
+        {
+            "pos": {
+                "x": 800,
+                "y": 80
+            },
+            "size": {
+                "w": 300,
+                "h": 300
+            },
+            "type": "moon",
+            "cssPosition": "fixed"
+        },
+        {
+            "pos": {
+                "x": 3400,
+                "y": 2
+            },
+            "size": {
+                "w": 407,
+                "h": 381
+            },
+            "type": "romeArena",
+            "cssPosition": "absolute"
+        },
+        {
+            "pos": {
+                "x": 5000,
+                "y": 1
+            },
+            "size": {
+                "w": 200,
+                "h": 200
+            },
+            "type": "roiGrec",
+            "cssPosition": "absolute"
+        },
+        {
+            "pos": {
+                "x": 1000,
+                "y": 18
+            },
+            "size": {
+                "w": 415,
+                "h": 435
+            },
+            "type": "greceBuilding",
+            "cssPosition": "absolute"
+        }
+    ],
+    "obstacles": [
+        {
+            "pos": {
+                "x": 1,
+                "y": 0
+            },
+            "type": "ground",
+            "size": {
+                "w": 2300,
+                "h": 30
+            }
+        },
+        {
+            "pos": {
+                "x": 3250,
+                "y": 0
+            },
+            "type": "ground",
+            "size": {
+                "w": 2000,
+                "h": 30
+            }
+        },
+        {
+            "pos": {
+                "x": 2100,
+                "y": 140
+            },
+            "type": "platform2",
+            "size": {
+                "w": 231,
+                "h": 72
+            }
+        },
+        {
+            "pos": {
+                "x": 2450,
+                "y": 260
+            },
+            "type": "platform2",
+            "size": {
+                "w": 231,
+                "h": 72
+            }
+        },
+        {
+            "pos": {
+                "x": 1350,
+                "y": 110
+            },
+            "type": "platform2",
+            "size": {
+                "w": 231,
+                "h": 72
+            }
+        },
+        {
+            "pos": {
+                "x": 950,
+                "y": 160
+            },
+            "type": "platform2",
+            "size": {
+                "w": 231,
+                "h": 72
+            }
+        },
+        {
+            "pos": {
+                "x": 2830,
+                "y": 140
+            },
+            "type": "platform2",
+            "size": {
+                "w": 231,
+                "h": 72
+            }
+        },
+        {
+            "pos": {
+                "x": 1750,
+                "y": 10
+            },
+            "type": "colonne",
+            "size": {
+                "w": 176,
+                "h": 143
+            }
+        },
+        {
+            "pos": {
+                "x": 650,
+                "y": 10
+            },
+            "type": "colonne",
+            "size": {
+                "w": 176,
+                "h": 143
+            }
+        },
+        {
+            "pos": {
+                "x": 3950,
+                "y": 10
+            },
+            "type": "colonne",
+            "size": {
+                "w": 176,
+                "h": 143
+            }
+        },
+        {
+            "pos": {
+                "x": 2350,
+                "y": 330
+            },
+            "size": {
+                "w": 50,
+                "h": 60
+            },
+            "type": "coin"
+        },
+        {
+            "pos": {
+                "x": 2280,
+                "y": 30
+            },
+            "size": {
+                "w": 50,
+                "h": 60
+            },
+            "type": "coin"
+        },
+        {
+            "pos": {
+                "x": 2850,
+                "y": 260
+            },
+            "size": {
+                "w": 70,
+                "h": 60
+            },
+            "type": "life"
+        },
+        {
+            "pos": {
+                "x": 900,
+                "y": 20
+            },
+            "size": {
+                "w": 50,
+                "h": 60
+            },
+            "type": "coin"
+        },
+        {
+            "pos": {
+                "x": 1250,
+                "y": 30
+            },
+            "size": {
+                "w": 50,
+                "h": 60
+            },
+            "type": "coin"
+        },
+        {
+            "pos": {
+                "x": 1680,
+                "y": 60
+            },
+            "size": {
+                "w": 50,
+                "h": 60
+            },
+            "type": "coin"
+        },
+        {
+            "pos": {
+                "x": 120,
+                "y": 150
+            },
+            "size": {
+                "w": 50,
+                "h": 50
+            },
+            "type": "power"
+        }
+    ],
+    "enemies": [
+        {
+            "pos": {
+                "x": 1200,
+                "y": 500
+            },
+            "mobile": true,
+            "speedUp": 4,
+            "skin": "enemy6",
+            "dims": {
+                "w": 96,
+                "h": 32
+              }
+        },
+        {
+            "pos": {
+                "x": 900,
+                "y": 500
+            },
+            "mobile": true,
+            "speedUp": 2,
+            "skin": "enemy3"
+        },
+        {
+            "pos": {
+                "x": 1500,
+                "y": 500
+            },
+            "mobile": true,
+            "speedUp": 3,
+            "skin": "enemy6",
+            "dims": {
+                "w": 96,
+                "h": 32
+              }
+        },
+        {
+            "pos": {
+                "x": 3500,
+                "y": 500
+            },
+            "mobile": true,
+            "speedUp": 3,
+            "skin": "enemy5"
+        }
+    ],
+    "background": "url('/assets/img/nightsky.jpg')",
+    "duration": 100,
+    "end": 5000
+}
