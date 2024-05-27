@@ -1,4 +1,4 @@
-import { audio, music, runAudio } from "./constants.js";
+import { audio, music, runAudio,audios } from "./constants.js";
 import {
     game
 } from "./game.js"
@@ -19,6 +19,7 @@ import {
 import { WsConnection } from "./score.handling.js"
 
 export {
+    removeKeyListener,
     addPauseContinue
 }
 // ------------------------------------------------------------------------------
@@ -66,7 +67,7 @@ function addPauseContinue() {
 // ------------------------------------------------------------------------------
 // VARIABLES
 // ------------------------------------------------------------------------------
-gameData.isJumping = false;
+// gameData.isJumping = false;
 let isPageRefreshed = false
 
 
@@ -74,7 +75,7 @@ let isPageRefreshed = false
 // EVENTLISTENERS
 // ------------------------------------------------------------------------------
 
-document.addEventListener('keydown', (event) => {
+function handleKeyDown(event) {
     switch (event.key.toUpperCase()) {
         case "P":
         case "ESCAPE":
@@ -82,16 +83,16 @@ document.addEventListener('keydown', (event) => {
             break;
 
         case "R":
-            restartGame()
+            restartGame();
             break;
 
         case "ArrowLeft".toUpperCase():
-            runAudio.play()
+            runAudio.play();
             gameData.keys.left.pressed = true;
             break;
 
         case "ArrowRight".toUpperCase():
-            runAudio.play()
+            runAudio.play();
             gameData.keys.right.pressed = true;
             break;
 
@@ -100,11 +101,18 @@ document.addEventListener('keydown', (event) => {
             if (!gameData.isJumping && gameData.player.onground) {
                 gameData.isJumping = true;
                 gameData.player.velocity.y += 20;
-                gameData.player.onground = false
+                gameData.player.onground = false;
             }
             break;
     }
-});
+}
+
+// Ajout de l'écouteur d'événements pour gérer les touches du clavier
+const eventListenerkeydown = document.addEventListener('keydown', handleKeyDown);
+
+function removeKeyListener() {
+    document.removeEventListener('keydown', handleKeyDown);
+}
 
 document.addEventListener('keyup', (event) => {
     if (event.key === "ArrowLeft") {

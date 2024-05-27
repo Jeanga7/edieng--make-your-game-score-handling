@@ -22,7 +22,8 @@ export {
     winModal,
     gameOverModal,
     audio,
-    music
+    music,
+    audios
 }
 
 const imgStorage = "/img/"

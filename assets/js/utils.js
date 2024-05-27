@@ -22,7 +22,7 @@ import {
 import {
   showHistory
 } from "./history.js";
-
+import { removeKeyListener } from "./eventListeners.js";
 export {
   gameData,
   Timer,
@@ -51,6 +51,7 @@ var gameData = {
   duration: 240,
   currentLevel: 0,
   globalAnimation: 0,
+  isJumping: false,
   player: null,
   totalScore: 0,
   lives: 3,
@@ -88,6 +89,7 @@ function Timer(t) {
 }
 
 function gameOver() {
+  removeKeyListener()
   showStats();
   killGame()
   gameOverModal.style.display = "flex";
