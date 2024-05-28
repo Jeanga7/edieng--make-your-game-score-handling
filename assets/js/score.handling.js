@@ -1,5 +1,5 @@
 import { gameData } from "./utils.js";
-export { WsConnection };
+export { WsConnection, displayScoreboard };
 
 function WsConnection() {
     var ws = new WebSocket("ws://localhost:8080/get");
@@ -65,17 +65,19 @@ function displayScoreboard(jsonData, playerName) {
             cell3.innerHTML = data.score;
             cell4.innerHTML = data.time;
 
-            if (data.name === playerName) {
+            if (data.name === playerName && playerName != "") {
                 playerData = data;
                 row.classList.add('highlight');
             }
         });
 
         const congratsMessage = document.getElementById("congratsMessage");
-        if (playerData) {
-            congratsMessage.innerText = `Congrats ${playerName}, you are on the ${playerData.rank} position.`;
-        } else {
-            congratsMessage.innerText = `Congrats ${playerName}`;
+        if (playerName != ""){
+            if (playerData) {
+                congratsMessage.innerText = `Congrats ${playerName}, you are on the ${playerData.rank} position.`;
+            } else {
+                congratsMessage.innerText = `Congrats ${playerName}`;
+            }
         }
     }
 

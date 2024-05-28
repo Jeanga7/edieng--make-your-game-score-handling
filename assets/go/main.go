@@ -109,23 +109,26 @@ func rankScoreboard(scoreboards []Scoreboard) []Scoreboard {
 		return scoreboards[i].Score > scoreboards[j].Score
 	})
 
-	rank := 1
-	prevScore := -1
-	for i := range scoreboards {
-		if scoreboards[i].Score != prevScore {
-			switch rank {
-			case 1:
-				scoreboards[i].Rank = "1st"
-			case 2:
-				scoreboards[i].Rank = "2nd"
-			case 3:
-				scoreboards[i].Rank = "3rd"
-			default:
-				scoreboards[i].Rank = fmt.Sprintf("%dth", rank)
+	for i := 0; i < len(scoreboards); i++ {
+		for j := i + 1; j < len(scoreboards)-1; j++ {
+			if scoreboards[i].Score == scoreboards[j].Score && scoreboards[i].Time > scoreboards[j].Time {
+				scoreboards[j], scoreboards[i] = scoreboards[i], scoreboards[j]
 			}
+		}
+	}
+	// sort.Slice(scoreboards, func(i, j int) } {
+	// 	})
+
+	rank := 1
+	// prevScore := -1
+	// var prevsc Scoreboard
+	for i := range scoreboards {
+		if scoreboards[i].Score != 0 {
+			scoreboards[i].Rank = fmt.Sprintf("#%d", rank)
 			rank++
-			prevScore = scoreboards[i].Score
-		} else {
+			// prevsc = scoreboards[i]
+			// prevScore = scoreboards[i].Score
+		} else if scoreboards[i].Score == 0 {
 			scoreboards[i].Rank = "Not Classed"
 		}
 	}

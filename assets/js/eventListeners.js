@@ -17,7 +17,7 @@ import {
     Time
 } from "./utils.js"
 
-import { WsConnection } from "./score.handling.js"
+import { WsConnection,displayScoreboard } from "./score.handling.js"
 
 export {
     removeKeyListener,
@@ -267,6 +267,20 @@ document.getElementById("closeButton").addEventListener("click", function () {
     document.getElementById("scoreboard").style.display = "none";
     window.location.reload()
 });
+
+document.getElementById("classements").addEventListener("click", function(){
+    var donnees
+    fetch('/json/data.json').then(response => {
+        return response.json();
+      }).then(data => {
+        // Work with JSON data here
+        // console.log(data);
+        displayScoreboard(data,"")
+      }).catch(err => {
+        // Do something for an error here
+      });
+    document.getElementById("scoreboard").style.display = "flex"
+})
 
 // Ajouter un écouteur d'événement pour détecter les changements de taille de l'écran
 window.addEventListener('resize', handleResize);
